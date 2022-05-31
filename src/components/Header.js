@@ -1,12 +1,11 @@
-/* eslint-disable */
 import React from 'react';
 
-const Header = () => {
+function Header() {
   return (
     <header>
-      <h1 className='title'>Todos</h1>
+      <h1 className="title">Todos</h1>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

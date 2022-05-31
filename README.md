@@ -16,10 +16,6 @@
     React
 - Technologies used
 
-## Live Demo
-
-[Live Demo Link]()
-
 
 ## Getting Started
 
