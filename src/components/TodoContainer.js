@@ -1,6 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import TodosList from './TodosList';
@@ -47,29 +44,35 @@ class TodoContainer extends React.Component {
   };
 
   delTodo = (id) => {
+    const { todos } = this.state;
     this.setState({
-      todos: [
-        ...this.state.todos.filter((todo) => todo.id !== id),
-      ],
+      todos: todos.filter((todo) => todo.id !== id),
     });
   };
 
   addTodoItem = (title) => {
-    const newTodo = {
-      id: uuidv4(),
-      title,
-      completed: false,
-    };
+    const { todos } = this.state;
     this.setState({
-      todos: [...this.state.todos, newTodo],
+      todos: [
+        ...todos,
+        {
+          id: uuidv4(),
+          title,
+          completed: false,
+        },
+      ],
     });
   };
 
   setUpdate = (updatedTitle, id) => {
+    const { todos } = this.state;
     this.setState({
-      todos: this.state.todos.map((todo) => {
+      todos: todos.map((todo) => {
         if (todo.id === id) {
-          todo.title = updatedTitle;
+          return {
+            ...todo,
+            title: updatedTitle,
+          };
         }
         return todo;
       }),
@@ -77,13 +80,14 @@ class TodoContainer extends React.Component {
   }
 
   render() {
+    const { todos } = this.state;
     return (
       <div className="container">
         <div className="inner">
           <Header />
           <InputTodo addTodoProps={this.addTodoItem} />
           <TodosList
-            todos={this.state.todos}
+            todos={todos}
             handleChangeProps={this.handleChange}
             deleteTodoProps={this.delTodo}
             setUpdate={this.setUpdate}

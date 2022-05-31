@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './TodoItem.module.css';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -31,13 +30,18 @@ class TodoItem extends React.Component {
       opacity: 0.4,
       textDecoration: 'line-through',
     };
-
-    const { completed, id, title } = this.props.todo;
-
+    const {
+      todo,
+      handleChangeProps,
+      deleteTodoProps,
+      setUpdate,
+    } = this.props;
+    const { completed, id, title } = todo;
+    const { editing } = this.state;
     const viewMode = {};
     const editMode = {};
 
-    if (this.state.editing) {
+    if (editing) {
       viewMode.display = 'none';
     } else {
       editMode.display = 'none';
@@ -49,10 +53,10 @@ class TodoItem extends React.Component {
           <input
             type="checkbox"
             checked={completed}
-            onChange={() => this.props.handleChangeProps(id)}
+            onChange={() => handleChangeProps(id)}
             className={styles.checkbox}
           />
-          <button type="button" onClick={() => this.props.deleteTodoProps(id)}>
+          <button type="button" onClick={() => deleteTodoProps(id)}>
             Delete
           </button>
           <span style={completed ? completedStyle : null}>
@@ -65,7 +69,7 @@ class TodoItem extends React.Component {
           style={editMode}
           value={title}
           onChange={(e) => {
-            this.props.setUpdate(e.target.value, id);
+            setUpdate(e.target.value, id);
           }}
           onKeyDown={this.handleUpdatedDone}
         />
@@ -73,5 +77,16 @@ class TodoItem extends React.Component {
     );
   }
 }
+
+TodoItem.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+  }).isRequired,
+  handleChangeProps: PropTypes.func.isRequired,
+  deleteTodoProps: PropTypes.func.isRequired,
+  setUpdate: PropTypes.func.isRequired,
+};
 
 export default TodoItem;
